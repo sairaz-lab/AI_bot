@@ -40,7 +40,7 @@ let mentorMessages = [
  * Reads a user-uploaded image/file and converts it to Base64 for local preview & storage
  */
 function handleFileUpload(event, inputKey) {
-    const file = event.target.files[0];
+    const file = event.target ? event.target.files[0] : null;
     if (!file) return;
 
     const reader = new FileReader();
@@ -58,10 +58,7 @@ function renderImagePreview(inputKey) {
     const containerId = `${inputKey}-preview-container`;
     let container = document.getElementById(containerId);
 
-    if (!container) {
-        console.warn(`Preview container #${containerId} not found in HTML.`);
-        return;
-    }
+    if (!container) return;
 
     if (pendingImages[inputKey]) {
         container.innerHTML = `
@@ -96,7 +93,7 @@ async function fetchBackendStreamCompletion(messagesArray, onChunkReceived) {
     const selectedModel = appPreferences.model || "llama-3.3-70b-versatile";
 
     try {
-        const response = await fetch("https://sairaz-careerguide.onrender.com/api/chat", { ... });", {
+        const response = await fetch("https://sairaz-careerguide.onrender.com/api/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -147,9 +144,6 @@ async function fetchBackendStreamCompletion(messagesArray, onChunkReceived) {
    SYSTEM PROMPTS (EXPLORE vs MENTOR)
    ========================================================================== */
 
-/**
- * Explore Tab Prompt: General, flexible AI like Gemini/ChatGPT.
- */
 function getExploreSystemPrompt() {
     const customInstr = appPreferences.customInstructions ? `\nUser Preferences: ${appPreferences.customInstructions}` : '';
     
@@ -163,9 +157,6 @@ INSTRUCTIONS:
 4. Use clear Markdown formatting with bolding and bullet points where helpful.`;
 }
 
-/**
- * Mentor Tab Prompt: Study & Career specific coach.
- */
 function getMentorSystemPrompt(careerContext) {
     const context = careerContext || "Data Analyst";
     const customInstr = appPreferences.customInstructions ? `\nUser Preferences: ${appPreferences.customInstructions}` : '';
@@ -548,11 +539,17 @@ function generateRoadmap(careerKey) {
     selectedRoadmapTitle = careerKey;
     activeCareerContext = careerKey;
 
-    document.getElementById('roadmap-title').innerText = careerKey;
-    document.getElementById('roadmap-tag').innerText = data.tag;
-    document.getElementById('roadmap-description').innerText = data.description;
+    const titleEl = document.getElementById('roadmap-title');
+    const tagEl = document.getElementById('roadmap-tag');
+    const descEl = document.getElementById('roadmap-description');
+
+    if (titleEl) titleEl.innerText = careerKey;
+    if (tagEl) tagEl.innerText = data.tag;
+    if (descEl) descEl.innerText = data.description;
 
     const stepsMount = document.getElementById('roadmap-steps-mount');
+    if (!stepsMount) return;
+    
     stepsMount.innerHTML = "";
 
     data.steps.forEach((step, index) => {
@@ -609,12 +606,14 @@ async function fetchDemandedCourses() {
     const exitBtn = document.getElementById('exit-course-btn');
     if (exitBtn) exitBtn.classList.remove('hidden');
 
-    mount.innerHTML = `
-        <div class="flex flex-col items-center justify-center py-12 space-y-3">
-            <div class="w-8 h-8 border-4 border-[#199A8E] border-t-transparent rounded-full animate-spin"></div>
-            <p class="text-xs font-semibold text-[#5C7270]">Fetching top courses for "${field}"...</p>
-        </div>
-    `;
+    if (mount) {
+        mount.innerHTML = `
+            <div class="flex flex-col items-center justify-center py-12 space-y-3">
+                <div class="w-8 h-8 border-4 border-[#199A8E] border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs font-semibold text-[#5C7270]">Fetching top courses for "${field}"...</p>
+            </div>
+        `;
+    }
 
     setTimeout(() => {
         currentFetchedCourses = generateCoursesForField(field);
@@ -976,10 +975,11 @@ function initTypingEffect() {
     let wordIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    const targetEl = document.getElementById('dynamic-typing');
 
     function typeEffect() {
+        const targetEl = document.getElementById('dynamic-typing');
         if (!targetEl) return;
+
         const currentWord = words[wordIndex];
         charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
 
