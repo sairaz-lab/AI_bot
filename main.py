@@ -8,7 +8,7 @@ import openai
 
 app = FastAPI()
 
-# Enable CORS so your frontend can communicate smoothly
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -27,7 +27,6 @@ async def generate_groq_stream(messages: list, model: str):
         yield "data: ⚠️ Error: GROQ_API_KEY is not set on the server.\n\n"
         return
 
-    # Initialize OpenAI client pointing to Groq's API base
     client = openai.AsyncOpenAI(
         api_key=api_key,
         base_url="https://api.groq.com/openai/v1"
@@ -45,13 +44,13 @@ async def generate_groq_stream(messages: list, model: str):
         async for chunk in response:
             content = chunk.choices[0].delta.content
             if content:
-                # Format chunk as a valid Server-Sent Event (SSE)
                 formatted_chunk = content.replace("\n", "\\n")
                 yield f"data: {formatted_chunk}\n\n"
 
     except Exception as e:
         yield f"data: ⚠️ Error connecting to AI: {str(e)}\n\n"
 
+# API Route
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
     return StreamingResponse(
@@ -59,16 +58,17 @@ async def chat_endpoint(request: ChatRequest):
         media_type="text/event-stream"
     )
 
-# 1. Serve root / to return index.html
+# Page Routes
 @app.get("/")
 async def read_root():
     return FileResponse("index.html")
 
-# 2. Serve /ai or /ai.html directly
 @app.get("/ai")
 @app.get("/ai.html")
 async def read_ai():
     return FileResponse("ai.html")
 
-# 3. Mount current directory so static assets (logo.svg, CSS, JS, etc.) load properly
-app.mount("/", StaticFiles(directory=".", html=True), name="static")
+# Serve explicit asset files like logo.svg
+@app.get("/logo.svg")
+async def read_logo():
+    return FileResponse("logo.svg")
