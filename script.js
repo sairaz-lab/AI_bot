@@ -96,7 +96,7 @@ async function fetchBackendStreamCompletion(messagesArray, onChunkReceived) {
     const selectedModel = appPreferences.model || "llama-3.3-70b-versatile";
 
     try {
-        const response = await fetch("/api/chat", {
+        const response = await fetch("https://sairaz-careerguide.onrender.com/api/chat", { ... });", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
