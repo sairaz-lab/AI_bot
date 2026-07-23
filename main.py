@@ -1,7 +1,8 @@
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import openai
 
@@ -58,6 +59,16 @@ async def chat_endpoint(request: ChatRequest):
         media_type="text/event-stream"
     )
 
+# 1. Serve root / to return index.html
 @app.get("/")
-def read_root():
-    return {"status": "Backend active and ready!"}
+async def read_root():
+    return FileResponse("index.html")
+
+# 2. Serve /ai or /ai.html directly
+@app.get("/ai")
+@app.get("/ai.html")
+async def read_ai():
+    return FileResponse("ai.html")
+
+# 3. Mount current directory so static assets (logo.svg, CSS, JS, etc.) load properly
+app.mount("/", StaticFiles(directory=".", html=True), name="static")
