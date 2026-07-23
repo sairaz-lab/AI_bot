@@ -2,13 +2,12 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import openai
 
 app = FastAPI()
 
-# Enable CORS
+# Enable CORS so frontend and backend communicate without restrictions
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -27,6 +26,7 @@ async def generate_groq_stream(messages: list, model: str):
         yield "data: ⚠️ Error: GROQ_API_KEY is not set on the server.\n\n"
         return
 
+    # Initialize OpenAI client configured for Groq
     client = openai.AsyncOpenAI(
         api_key=api_key,
         base_url="https://api.groq.com/openai/v1"
@@ -44,13 +44,14 @@ async def generate_groq_stream(messages: list, model: str):
         async for chunk in response:
             content = chunk.choices[0].delta.content
             if content:
+                # Format chunk as a Server-Sent Event (SSE)
                 formatted_chunk = content.replace("\n", "\\n")
                 yield f"data: {formatted_chunk}\n\n"
 
     except Exception as e:
         yield f"data: ⚠️ Error connecting to AI: {str(e)}\n\n"
 
-# API Route
+# ── API ENDPOINT FOR CHATBOT ──
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
     return StreamingResponse(
@@ -58,8 +59,9 @@ async def chat_endpoint(request: ChatRequest):
         media_type="text/event-stream"
     )
 
-# Page Routes
+# ── PAGE ROUTES ──
 @app.get("/")
+@app.get("/index.html")
 async def read_root():
     return FileResponse("index.html")
 
@@ -68,7 +70,11 @@ async def read_root():
 async def read_ai():
     return FileResponse("ai.html")
 
-# Serve explicit asset files like logo.svg
-@app.get("/logo.svg")
-async def read_logo():
-    return FileResponse("logo.svg")
+# ── DYNAMIC STATIC ASSETS ROUTE ──
+# Serves logo.svg, CSS, JavaScript, or any other project files
+@app.get("/{file_name}")
+async def read_static_file(file_name: str):
+    file_path = os.path.join(".", file_name)
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        return FileResponse(file_path)
+    return FileResponse("index.html")
