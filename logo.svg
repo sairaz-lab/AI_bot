@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Background Container -->
+  <rect width="100%" height="100%" rx="20" fill="#126766"/>
+
+  <g fill="#FFFFFF">
+    <!-- Antenna -->
+    <circle cx="50" cy="22" r="3.5"/>
+    <rect x="48.5" y="25" width="3" height="7" rx="1.5"/>
+
+    <!-- Head Shell -->
+    <rect x="22" y="32" width="56" height="38" rx="19"/>
+    
+    <!-- Ear Bolts -->
+    <rect x="16" y="44" width="8" height="14" rx="3"/>
+    <rect x="76" y="44" width="8" height="14" rx="3"/>
+
+    <!-- Face Screen & Eyes -->
+    <rect x="28" y="38" width="44" height="26" rx="13" fill="#126766"/>
+    <!-- Glowing Robot Eyes -->
+    <circle cx="40" cy="51" r="5" fill="#FFFFFF"/>
+    <circle cx="60" cy="51" r="5" fill="#FFFFFF"/>
+
+    <!-- Body/Shoulders -->
+    <path d="M 28,75 Q 50,70 72,75 C 78,85 78,92 78,92 L 22,92 C 22,92 22,85 28,75 Z"/>
+  </g>
+</svg>

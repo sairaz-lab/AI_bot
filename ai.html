@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAIRAZ_CAREERGUID</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden bg-gray-50
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- Slide-out Sidebar Menu -->
+    <div id="sidebar-menu" class="fixed top-0 left-0 bottom-0 w-80 bg-white border-r border-gray-100 z-50 -translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between p-6 shadow-xl overflow-y-auto">
+        <div class="space-y-6">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full border-2 border-[#199A8E] flex items-center justify-center text-[#199A8E]">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3 transform rotate-45">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                        </svg>
+                    </div>
+                    <span class="font-bold text-[#1A3330] text-sm">Navigation & History</span>
+                </div>
+                <button onclick="toggleSidebar()" class="p-1 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+
+            <!-- Categorized Sidebar History List -->
+            <div id="sidebar-history-sections" class="space-y-5">
+                <!-- Dynamically populated history sections (Explore, Mentor, Courses) -->
+            </div>
+        </div>
+
+        <!-- Sidebar Footer Actions (Settings & Logout) -->
+        <div class="border-t border-gray-100 pt-4 space-y-1">
+            <button onclick="openSettingsModal()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-[#F0F7F7] text-[#5C7270] hover:text-[#199A8E] font-semibold text-xs transition text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                Settings
+            </button>
+            <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-red-50 text-[#5C7270] hover:text-red-500 font-semibold text-xs transition text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" /></svg>
+                Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="w-full max-w-5xl mx-auto px-6 py-4 flex items-center justify-between z-20">
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" onclick="toggleSidebar()" class="p-2 hover:bg-white/60 rounded-xl transition active:scale-95 text-[#1A3330]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchView('explore')">
+                <div class="w-8 h-8 rounded-full border-2 border-[#199A8E] flex items-center justify-center text-[#199A8E]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transform rotate-45">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                    </svg>
+                </div>
+                <span class="font-bold text-[#1A3330] tracking-tight">SAIRAZ_LAB</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 bg-white/40 backdrop-blur-sm p-1 rounded-full border border-white/40">
+                <button onclick="switchView('explore')" id="tab-explore" class="px-5 py-2 rounded-full text-sm font-semibold transition active:scale-95 bg-[#199A8E] text-white shadow-sm">Explore</button>
+                <button onclick="openMentorChatTab()" id="tab-chat" class="px-5 py-2 rounded-full text-sm font-semibold transition active:scale-95 text-[#5C7270] hover:bg-white/50">Mentor Chat</button>
+                <button onclick="switchView('courses')" id="tab-courses" class="px-5 py-2 rounded-full text-sm font-semibold transition active:scale-95 text-[#5C7270] hover:bg-white/50">Demanded Courses</button>
+            </div>
+
+            <a href="index.html" class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-[#1A3330] bg-white/70 hover:bg-white hover:shadow-sm border border-gray-200/80 transition active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>
+                <span>Home</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-5xl mx-auto px-6 pb-12 relative overflow-hidden">
+
+        <!-- Explore Panel -->
+        <div id="view-explore" class="page-view opacity-100 translate-y-0 space-y-8">
+            <div class="w-full flex flex-col items-center justify-center py-6 px-4 text-center space-y-6">
+                <div id="explore-header-text" class="space-y-2 transition-all duration-300">
+                    <h1 class="text-4xl md:text-5xl font-bold text-[#1A3330] tracking-tight">
+                        Think It. Type It. Launch It.
+                    </h1>
+                    <p class="text-[#5C7270] text-lg font-medium">
+                        Build production-ready <span id="dynamic-typing" class="text-[#199A8E] border-b-2 border-[#199A8E]/40 pb-0.5 typing-cursor">careers</span>
+                    </p>
+                </div>
+
+                <!-- Prompt Input Card -->
+                <div id="explore-prompt-card" class="w-full max-w-2xl bg-white rounded-2xl border border-gray-200/80 shadow-md p-4 relative focus-within:border-[#199A8E] transition-all duration-300">
+                    <div id="explore-compact-view" class="space-y-3">
+                        <!-- Attachment Previews Tray -->
+                        <div id="explore-attachment-previews" class="flex flex-wrap gap-2 empty:hidden pb-1"></div>
+
+                        <textarea 
+                            id="terminal-input"
+                            rows="3" 
+                            onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); handleSearchSubmission(); }"
+                            class="w-full text-sm text-[#1A3330] placeholder-[#889C9A] resize-none focus:outline-none pr-12 pb-2"
+                            placeholder="Describe any career goal, target industry, or attach a resume/image..."
+                        ></textarea>
+                        
+                        <div class="flex items-center justify-between">
+                            <!-- File & Image Upload Trigger -->
+                            <div class="flex items-center gap-1">
+                                <input type="file" id="explore-file-input" multiple accept="image/*,.pdf,.doc,.docx,.txt" class="hidden" onchange="handleFileSelection(event, 'explore')" />
+                                <button type="button" onclick="document.getElementById('explore-file-input').click()" class="p-2 hover:bg-gray-100 rounded-xl text-gray-500 hover:text-[#199A8E] transition flex items-center gap-1 text-xs font-semibold" title="Attach photos or documents">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.55 18.32a1.5 1.5 0 0 1-2.121-2.121l8.835-8.836" />
+                                    </svg>
+                                    <span class="hidden sm:inline">Attach</span>
+                                </button>
+                            </div>
+
+                            <button onclick="handleSearchSubmission()" class="p-2.5 bg-[#1A3330] hover:bg-[#199A8E] text-white rounded-xl transition duration-200 shadow-sm active:scale-95 flex items-center gap-2 text-xs font-semibold px-4">
+                                <span>send ⬆</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v14.5a.75.75 0 0 1-1.5 0V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="explore-expanded-workspace" class="hidden flex flex-col h-[520px] justify-between text-left">
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#199A8E]"></span>
+                                <h3 id="workspace-thread-title" class="font-bold text-[#1A3330] text-sm">AI Exploration Workspace</h3>
+                            </div>
+                            <button onclick="collapseExploreWorkspace()" class="text-xs text-[#5C7270] hover:text-[#199A8E] font-semibold bg-[#F0F7F7] px-3 py-1.5 rounded-xl transition">
+                                ✕ Exit & Save to History
+                            </button>
+                        </div>
+
+                        <div id="explore-chat-messages" class="overflow-y-auto flex-grow my-3 space-y-3 pr-1"></div>
+
+                        <!-- Workspace Attachment Previews -->
+                        <div id="explore-workspace-attachment-previews" class="flex flex-wrap gap-2 empty:hidden pb-1"></div>
+
+                        <div class="border-t border-gray-100 pt-3 flex gap-2 items-center">
+                            <input type="file" id="explore-workspace-file-input" multiple accept="image/*,.pdf,.doc,.docx,.txt" class="hidden" onchange="handleFileSelection(event, 'explore-workspace')" />
+                            <button type="button" onclick="document.getElementById('explore-workspace-file-input').click()" class="p-2.5 hover:bg-gray-100 rounded-xl text-gray-500 hover:text-[#199A8E] transition" title="Attach photos or documents">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.55 18.32a1.5 1.5 0 0 1-2.121-2.121l8.835-8.836" />
+                                </svg>
+                            </button>
+                            <input 
+                                id="explore-chat-input" 
+                                type="text" 
+                                onkeydown="if(event.key==='Enter'){ sendExploreWorkspaceMessage(); }"
+                                placeholder="Ask a follow-up, request a skill map, or attach files..." 
+                                class="flex-grow border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#199A8E]" 
+                            />
+                            <button onclick="sendExploreWorkspaceMessage()" class="bg-[#199A8E] hover:bg-[#158278] text-white px-5 py-3 rounded-xl text-xs font-bold transition">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Career Fields Section -->
+            <div id="career-fields-section" class="space-y-4 transition-all duration-300">
+                <div class="flex items-center gap-2 text-[#1A3330] font-bold text-lg px-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-[#199A8E]">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                    </svg>
+                    <span>Career Fields</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div onclick="generateRoadmap('Data Analyst')" class="bg-white border border-gray-100 p-6 rounded-2xl hover:border-[#199A8E]/40 hover:shadow-md transition duration-300 flex flex-col justify-between items-start group cursor-pointer min-h-[200px]">
+                        <div class="space-y-2">
+                            <span class="inline-block px-3 py-1 bg-[#F0F7F7] text-[#199A8E] rounded-lg text-xs font-bold tracking-wide uppercase">chart</span>
+                            <h3 class="text-[#1A3330] font-bold text-base group-hover:text-[#199A8E] transition-colors">Data Analyst</h3>
+                            <p class="text-[#5C7270] text-xs leading-relaxed line-clamp-4">Turn raw numbers into decisions — data analysts explore, clean, and visualize data so teams know what to do next.</p>
+                        </div>
+                    </div>
+                    <div onclick="generateRoadmap('Software Developer')" class="bg-white border border-gray-100 p-6 rounded-2xl hover:border-[#199A8E]/40 hover:shadow-md transition duration-300 flex flex-col justify-between items-start group cursor-pointer min-h-[200px]">
+                        <div class="space-y-2">
+                            <span class="inline-block px-3 py-1 bg-[#F0F7F7] text-[#199A8E] rounded-lg text-xs font-bold tracking-wide uppercase">code</span>
+                            <h3 class="text-[#1A3330] font-bold text-base group-hover:text-[#199A8E] transition-colors">Software Developer</h3>
+                            <p class="text-[#5C7270] text-xs leading-relaxed line-clamp-4">Design, build, and maintain the applications people use every day — from web apps to mobile apps to backend systems.</p>
+                        </div>
+                    </div>
+                    <div onclick="generateRoadmap('Nurse')" class="bg-white border border-gray-100 p-6 rounded-2xl hover:border-[#199A8E]/40 hover:shadow-md transition duration-300 flex flex-col justify-between items-start group cursor-pointer min-h-[200px]">
+                        <div class="space-y-2">
+                            <span class="inline-block px-3 py-1 bg-[#F0F7F7] text-[#199A8E] rounded-lg text-xs font-bold tracking-wide uppercase">heart</span>
+                            <h3 class="text-[#1A3330] font-bold text-base group-hover:text-[#199A8E] transition-colors">Nurse</h3>
+                            <p class="text-[#5C7270] text-xs leading-relaxed line-clamp-4">Provide direct, hands-on care to patients and support their recovery — nursing blends science, empathy, and quick thinking.</p>
+                        </div>
+                    </div>
+                    <div onclick="generateRoadmap('Literature & Writing')" class="bg-white border border-gray-100 p-6 rounded-2xl hover:border-[#199A8E]/40 hover:shadow-md transition duration-300 flex flex-col justify-between items-start group cursor-pointer min-h-[200px]">
+                        <div class="space-y-2">
+                            <span class="inline-block px-3 py-1 bg-[#F0F7F7] text-[#199A8E] rounded-lg text-xs font-bold tracking-wide uppercase">book</span>
+                            <h3 class="text-[#1A3330] font-bold text-base group-hover:text-[#199A8E] transition-colors">Literature & Writing</h3>
+                            <p class="text-[#5C7270] text-xs leading-relaxed line-clamp-4">Study, interpret, and create written work — a path toward writing, editing, teaching, publishing, or research careers.</p>
+                        </div>
+                    </div>
+                    <div onclick="generateRoadmap('UX Designer')" class="bg-white border border-gray-100 p-6 rounded-2xl hover:border-[#199A8E]/40 hover:shadow-md transition duration-300 flex flex-col justify-between items-start group cursor-pointer min-h-[200px]">
+                        <div class="space-y-2">
+                            <span class="inline-block px-3 py-1 bg-[#F0F7F7] text-[#199A8E] rounded-lg text-xs font-bold tracking-wide uppercase">palette</span>
+                            <h3 class="text-[#1A3330] font-bold text-base group-hover:text-[#199A8E] transition-colors">UX Designer</h3>
+                            <p class="text-[#5C7270] text-xs leading-relaxed line-clamp-4">Shape how digital products feel to use — researching user needs and designing interfaces that are clear and delightful.</p>
+                        </div>
+                    </div>
+                    <div onclick="generateRoadmap('Financial Analyst')" class="bg-white border border-gray-100 p-6 rounded-2xl hover:border-[#199A8E]/40 hover:shadow-md transition duration-300 flex flex-col justify-between items-start group cursor-pointer min-h-[200px]">
+                        <div class="space-y-2">
+                            <span class="inline-block px-3 py-1 bg-[#F0F7F7] text-[#199A8E] rounded-lg text-xs font-bold tracking-wide uppercase">coins</span>
+                            <h3 class="text-[#1A3330] font-bold text-base group-hover:text-[#199A8E] transition-colors">Financial Analyst</h3>
+                            <p class="text-[#5C7270] text-xs leading-relaxed line-clamp-4">Evaluate financial data to guide investment, budgeting, and business decisions for companies or clients.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Roadmap View -->
+        <div id="view-roadmap" class="page-view opacity-0 translate-y-4 pointer-events-none hidden max-w-3xl mx-auto w-full space-y-8">
+            <div class="w-full flex justify-start">
+                <button onclick="closeRoadmapView()" class="flex items-center gap-2 text-xs font-bold text-[#199A8E] hover:text-[#158278] transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <div class="w-full bg-white border border-gray-100 rounded-[32px] p-8 md:p-10 flex flex-col md:flex-row justify-between items-start relative shadow-sm overflow-hidden min-h-[220px]">
+                <div class="space-y-4 max-w-xl z-10 flex-grow">
+                    <div class="flex items-center gap-2">
+                        <span id="roadmap-tag" class="inline-block px-3 py-1 bg-[#F0F7F7] text-[#199A8E] rounded-lg text-xs font-bold tracking-wide uppercase border border-[#199A8E]/10">chart</span>
+                        <h2 id="roadmap-title" class="serif-heading text-3xl text-[#1A3330] font-bold ml-1">Data Analyst</h2>
+                    </div>
+                    <p id="roadmap-description" class="text-[#5C7270] text-sm leading-relaxed">
+                        Turn raw numbers into decisions — data analysts explore, clean, and visualize data so teams know what to do next.
+                    </p>
+                    <button onclick="launchInteractiveMentorWorkspace()" class="flex items-center gap-2 bg-[#199A8E] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-sm hover:bg-[#158278] transition-all active:scale-95 mt-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg>
+                        Launch Interactive Workspace
+                    </button>
+                </div>
+                
+                <div class="absolute -right-8 -top-8 w-44 h-44 rounded-full bg-[#199A8E] opacity-90 hidden md:block shadow-inner translate-x-4 translate-y-4"></div>
+            </div>
+
+            <div class="w-full space-y-6">
+                <div class="flex items-center gap-2 text-[#1A3330] font-bold text-base px-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-[#199A8E]">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                    </svg>
+                    <span>Recommended Roadmap</span>
+                </div>
+
+                <div id="roadmap-steps-mount" class="relative pl-8 border-l-2 border-[#199A8E]/40 space-y-4 ml-4"></div>
+            </div>
+        </div>
+
+        <!-- Dedicated Mentor Chat View -->
+        <div id="view-chat" class="page-view opacity-0 translate-y-4 pointer-events-none hidden max-w-4xl mx-auto w-full">
+            <div id="chat-wrapper-box" class="bg-white rounded-[32px] border border-gray-100 shadow-sm flex flex-col justify-between min-h-[560px] h-[75vh] relative overflow-hidden p-6">
+                <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#199A8E] text-white flex items-center justify-center font-bold text-sm shadow-sm">AI</div>
+                        <div>
+                            <h3 class="font-bold text-[#1A3330] text-sm">Dedicated Career Mentor</h3>
+                            <p class="text-xs text-[#199A8E] flex items-center gap-1 font-medium">● Active Coaching Session</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exitAndArchiveMentorChat()" class="text-xs text-[#5C7270] hover:text-[#199A8E] font-semibold bg-[#F0F7F7] px-3.5 py-2 rounded-xl transition shadow-sm">
+                            ✕ Exit & Save to History
+                        </button>
+                    </div>
+                </div>
+
+                <div id="mentor-chat-messages" class="overflow-y-auto flex-grow my-4 space-y-3 px-1"></div>
+
+                <!-- Mentor Chat Attachment Previews -->
+                <div id="mentor-attachment-previews" class="flex flex-wrap gap-2 empty:hidden pb-2"></div>
+
+                <div class="border-t border-gray-100 pt-3 flex gap-2 items-center">
+                    <input type="file" id="mentor-file-input" multiple accept="image/*,.pdf,.doc,.docx,.txt" class="hidden" onchange="handleFileSelection(event, 'mentor')" />
+                    <button type="button" onclick="document.getElementById('mentor-file-input').click()" class="p-2.5 hover:bg-gray-100 rounded-xl text-gray-500 hover:text-[#199A8E] transition" title="Attach photos or documents">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.55 18.32a1.5 1.5 0 0 1-2.121-2.121l8.835-8.836" />
+                        </svg>
+                    </button>
+                    <input id="mentor-input" type="text" onkeydown="if(event.key==='Enter') sendMentorDirectMessage()" placeholder="Message your career mentor or attach files..." class="flex-grow border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#199A8E]" />
+                    <button onclick="sendMentorDirectMessage()" class="bg-[#199A8E] hover:bg-[#158278] text-white px-5 py-3 rounded-xl text-xs font-bold transition">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demanded Courses Finder Panel -->
+        <div id="view-courses" class="page-view opacity-0 translate-y-4 pointer-events-none hidden max-w-4xl mx-auto space-y-6">
+            <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm space-y-4">
+                <div class="flex items-start justify-between">
+                    <div class="space-y-1">
+                        <h1 class="text-[#1A3330] text-2xl font-bold tracking-tight">Demanded Field Courses</h1>
+                        <p class="text-[#5C7270] text-xs">Enter any career domain to retrieve top platforms, paid certifications, and free courses automatically.</p>
+                    </div>
+                    <button id="exit-course-btn" onclick="exitAndArchiveCourseSearch()" class="hidden text-xs text-[#5C7270] hover:text-[#199A8E] font-semibold bg-[#F0F7F7] px-3.5 py-2 rounded-xl transition shadow-sm">
+                        ✕ Exit & Save Search
+                    </button>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input 
+                        id="course-field-input" 
+                        type="text" 
+                        onkeydown="if(event.key==='Enter') fetchDemandedCourses()" 
+                        placeholder="e.g. Machine Learning, Cloud Architecture, Data Engineering..." 
+                        class="flex-grow border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#199A8E]" 
+                    />
+                    <button onclick="fetchDemandedCourses()" class="bg-[#199A8E] hover:bg-[#158278] text-white px-6 py-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                        Find Courses
+                    </button>
+                </div>
+
+                <!-- Course Category Filters -->
+                <div class="flex items-center gap-2 border-b border-gray-100 pb-3 pt-2 text-xs font-semibold overflow-x-auto">
+                    <button onclick="filterCourseCategory('all')" id="filter-all" class="px-3 py-1.5 rounded-lg bg-[#199A8E] text-white shrink-0">All Results</button>
+                    <button onclick="filterCourseCategory('paid')" id="filter-paid" class="px-3 py-1.5 rounded-lg text-[#5C7270] hover:bg-gray-100 shrink-0">Paid Courses</button>
+                    <button onclick="filterCourseCategory('free')" id="filter-free" class="px-3 py-1.5 rounded-lg text-[#5C7270] hover:bg-gray-100 shrink-0">Free / Unpaid</button>
+                </div>
+
+                <!-- Course Results Container -->
+                <div id="course-results-mount" class="space-y-4 pt-2">
+                    <p class="text-xs text-gray-400 italic text-center py-8">Enter a field above and click "Find Courses" to view results.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Professional Real-World AI Settings Modal Dialog -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-2xl w-full max-w-lg p-6 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                <div class="flex items-center gap-2 text-[#1A3330]">
+                    <div class="p-2 bg-[#F0F7F7] rounded-xl text-[#199A8E]">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">System Settings & AI Preferences</h3>
+                        <p class="text-[11px] text-[#5C7270]">Configure intelligence models and app behavior</p>
+                    </div>
+                </div>
+                <button onclick="closeSettingsModal()" class="p-1 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+
+            <div class="space-y-5 text-xs text-[#1A3330]">
+                <!-- AI Engine Model Selection -->
+                <div class="space-y-1.5">
+                    <label class="font-bold flex items-center justify-between">
+                        <span>AI Intelligence Model</span>
+                        <span class="text-[10px] text-[#199A8E] bg-[#F0F7F7] px-2 py-0.5 rounded-md font-semibold">Groq Powered</span>
+                    </label>
+                    <select id="setting-ai-model" onchange="saveAppPreferences()" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#199A8E] bg-white">
+                        <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (Recommended)</option>
+                        <option value="llama3-8b-8192">Llama 3 8B (Ultra Fast)</option>
+                        <option value="mixtral-8x7b-32768">Mixtral 8x7B (High Context)</option>
+                    </select>
+                </div>
+
+                <!-- Custom System Persona / Instructions -->
+                <div class="space-y-1.5">
+                    <label class="font-bold block">Personalized AI Mentorship Style</label>
+                    <textarea id="setting-custom-instructions" rows="2" onchange="saveAppPreferences()" placeholder="e.g., Focus heavily on technical code, maintain direct feedback style, etc." class="w-full border border-gray-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-[#199A8E] resize-none"></textarea>
+                </div>
+
+                <!-- Startup View Selection -->
+                <div class="flex items-center justify-between border-t border-gray-100 pt-4">
+                    <div>
+                        <h4 class="font-bold">Default Startup View</h4>
+                        <p class="text-[11px] text-[#5C7270]">Select view shown when application launches</p>
+                    </div>
+                    <select id="setting-default-tab" onchange="saveAppPreferences()" class="border border-gray-200 rounded-xl px-2.5 py-1.5 text-xs focus:outline-none focus:border-[#199A8E] bg-white">
+                        <option value="explore">Explore</option>
+                        <option value="chat">Mentor Chat</option>
+                        <option value="courses">Courses</option>
+                    </select>
+                </div>
+
+                <!-- Auto-Archive Setting -->
+                <div class="flex items-center justify-between border-t border-gray-100 pt-3">
+                    <div>
+                        <h4 class="font-bold">Auto-Archive Workspace Sessions</h4>
+                        <p class="text-[11px] text-[#5C7270]">Automatically save chats into history when switching tabs</p>
+                    </div>
+                    <input type="checkbox" id="setting-auto-archive" onchange="saveAppPreferences()" class="w-4 h-4 accent-[#199A8E] rounded cursor-pointer" />
+                </div>
+
+                <!-- Data & Storage Management -->
+                <div class="border-t border-gray-100 pt-4 space-y-2">
+                    <h4 class="font-bold text-gray-500 uppercase text-[10px] tracking-wider">Data & Storage Management</h4>
+                    <button onclick="clearAllAppHistory()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                        Clear All Saved Workspace & Chat History
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>

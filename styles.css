@@ -1,0 +1,21 @@
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: linear-gradient(135deg, #F0F7F7 0%, #E6F2F2 100%);
+}
+
+.page-view {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.typing-cursor::after {
+    content: '|';
+    animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.serif-heading {
+    font-family: 'Fraunces', serif;
+}
