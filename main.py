@@ -17,7 +17,7 @@ app.add_middleware(
 )
 
 class ChatRequest(BaseModel):
-    model: str = "llama-3.3-70b-versatile"
+    model: str = "openai/gpt-oss-120b"
     messages: list
 
 async def generate_groq_stream(messages: list, model: str):
