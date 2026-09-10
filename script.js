@@ -8,7 +8,7 @@ let courseSessions = JSON.parse(localStorage.getItem('course_history')) || [];
 let appPreferences = JSON.parse(localStorage.getItem('app_prefs')) || { 
     defaultTab: 'explore', 
     autoArchive: true,
-    model: 'llama-3.3-70b-versatile',
+    model: 'gpt-4o-mini',
     customInstructions: ''
 };
 
@@ -90,7 +90,7 @@ function removeAttachedImage(inputKey) {
  * Universal Stream Fetcher communicating with backend FastAPI server (/api/chat)
  */
 async function fetchBackendStreamCompletion(messagesArray, onChunkReceived) {
-    const selectedModel = appPreferences.model || "llama-3.3-70b-versatile";
+    const selectedModel = appPreferences.model || "gpt-4o-mini";
 
     try {
         const response = await fetch("https://sairaz-careerguide.onrender.com/api/chat", {
