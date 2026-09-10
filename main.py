@@ -7,7 +7,6 @@ import openai
 
 app = FastAPI()
 
-# Enable CORS so frontend and backend communicate without restrictions
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,20 +16,17 @@ app.add_middleware(
 )
 
 class ChatRequest(BaseModel):
-    model: str = "openai/gpt-oss-120b"
+    model: str = "gpt-4o-mini"  # Default OpenAI model
     messages: list
 
-async def generate_groq_stream(messages: list, model: str):
-    api_key = os.getenv("GROQ_API_KEY")
+async def generate_openai_stream(messages: list, model: str):
+    api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        yield "data: ⚠️ Error: GROQ_API_KEY is not set on the server.\n\n"
+        yield "data: ⚠️ Error: OPENAI_API_KEY is not set on the server.\n\n"
         return
 
-    # Initialize OpenAI client configured for Groq
-    client = openai.AsyncOpenAI(
-        api_key=api_key,
-        base_url="https://api.groq.com/openai/v1"
-    )
+    # Native OpenAI Client
+    client = openai.AsyncOpenAI(api_key=api_key)
 
     try:
         response = await client.chat.completions.create(
@@ -40,26 +36,21 @@ async def generate_groq_stream(messages: list, model: str):
             max_tokens=1024,
             stream=True
         )
-
         async for chunk in response:
             content = chunk.choices[0].delta.content
             if content:
-                # Format chunk as a Server-Sent Event (SSE)
                 formatted_chunk = content.replace("\n", "\\n")
                 yield f"data: {formatted_chunk}\n\n"
-
     except Exception as e:
         yield f"data: ⚠️ Error connecting to AI: {str(e)}\n\n"
 
-# ── API ENDPOINT FOR CHATBOT ──
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
     return StreamingResponse(
-        generate_groq_stream(request.messages, request.model),
+        generate_openai_stream(request.messages, request.model),
         media_type="text/event-stream"
     )
 
-# ── PAGE ROUTES ──
 @app.get("/")
 @app.get("/index.html")
 async def read_root():
@@ -70,8 +61,6 @@ async def read_root():
 async def read_ai():
     return FileResponse("ai.html")
 
-# ── DYNAMIC STATIC ASSETS ROUTE ──
-# Serves logo.svg, CSS, JavaScript, or any other project files
 @app.get("/{file_name}")
 async def read_static_file(file_name: str):
     file_path = os.path.join(".", file_name)
